@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
-const pages = ['customers', 'trainings'];
+const pages = ['customers', 'trainings', 'calendar'];
 
 
 const ResponsiveAppBar = () => {

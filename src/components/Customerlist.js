@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-material.css';
 import Addcustomer from './Addcustomer';
 import Snackbar from '@mui/material/Snackbar';
-import { Alert, IconButton } from '@mui/material';
+import { Alert, IconButton, Button, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Editcustomer from './Editcustomer';
 import Addtraining from './Addtraining';
@@ -13,6 +13,8 @@ function Customerlist(){
     const [customers, setCustomers] = useState([]);
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
+
+    const gridRef = useRef();
 
     useEffect(()=>{
         fetchCustomers()
@@ -41,7 +43,6 @@ function Customerlist(){
       });
     };
     const deleteCustomer = (link) => {
-      
       if (
         window.confirm(
           "Are you sure? All trainings will be deleted with customer information!"
@@ -94,6 +95,10 @@ function Customerlist(){
         })
         .catch(err=>console.error(err))
     }
+
+    const onBtExport = useCallback(() => {
+        gridRef.current.api.exportDataAsCsv({fileName:'Customers Information'});
+    }, []);
     
     const [columns] = useState([
         {field: 'firstname', sortable:true, filter:true, width:140},
@@ -125,15 +130,31 @@ function Customerlist(){
             </IconButton>
          }
     ])
-   
+
+ 
     return (
       <>
         <div
           className="ag-theme-material"
           style={{ height: 600, width: "90%", marginLeft: 90 }}
         >
-          <Addcustomer addCustomer={addCustomer} />
+          <Stack
+            direction="row"
+            justifyContent="center"
+            alignItems="flex-end"
+            spacing={2}
+          >
+            <Addcustomer addCustomer={addCustomer} />
+            <Button
+              variant="contained"
+              onClick={onBtExport}
+              style={{ position: "relative", marginTop: 8, marginLeft: -400 }}
+            >
+              Export to Csv
+            </Button>
+          </Stack>
           <AgGridReact
+            ref={gridRef}
             rowData={customers}
             columnDefs={columns}
             pagination={true}

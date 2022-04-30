@@ -43,7 +43,7 @@ function Addtraining({ params, addTraining}){
     setDate(newDate)
   }
   const handleSave = ()=>{
-    console.log(trainings);
+
     addTraining(trainings);
     setOpen(false);
     
