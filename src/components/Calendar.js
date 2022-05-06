@@ -8,6 +8,8 @@ import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css"
 
 import {useState, useEffect} from 'react';
+import { addMinutes, parseISO } from 'date-fns';
+
 
 function Calendar () {
   const [trainings, setTrainings] = useState([]);
@@ -28,9 +30,9 @@ function Calendar () {
     
     events.push({
       id: training.id,
-      title: `${training.activity}`,
+      title: `${training.activity} / ${training.customer.firstname} ${training.customer.lastname}`,
       start: training.date,
-      description:`${training.customer.firstname} ${training.customer.lastname}`
+      end: addMinutes(parseISO(training.date), training.duration )
     })
     return events
   },[])
@@ -38,8 +40,6 @@ function Calendar () {
   
     return (
       <FullCalendar
-        
-        
         headerToolbar={{
           left: "prev,next",
           center: "title",
@@ -50,6 +50,12 @@ function Calendar () {
         // headerToolbar={true}
         initialView="dayGridMonth"
         events={eventHandler}
+        displayEventEnd={true}
+        eventDisplay='block'
+        firstDay={1}
+        aspectRatio={2.5}
+        slotMinWidth={50}
+        eventTextColor={'black'}
         
       />
     )   

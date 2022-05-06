@@ -51,7 +51,7 @@ function Traininglist () {
         {field:'date', sortable:true, filter:true, valueFormatter: params => format(parseISO(params.value), "dd.MM.yyyy.p")},
         {field: 'duration', sortable:true, filter:true},
         {field: 'fullname', headerName:'Customer', sortable:true, filter:true,
-        valueGetter(params){return params.data.customer.firstname +' '+ params.data.customer.lastname}, supressMenu:true,
+        valueGetter(params){return params.data.customer.firstname +' '+ params.data.customer.lastname}, suppressMenu:true,
         },
         {
           field:'id',
